@@ -134,3 +134,22 @@ def get_program_details(program_id):
     except Exception as e:
         print(f"Error fetching program details: {e}")
         return None
+
+# 人気ベースレコメンド用関数
+def get_popular_programs(n_programs=10):
+    try:
+        conn = connect_db()
+        c = conn.cursor()
+        c.execute('''
+            SELECT program_id, program_title, COUNT(*) as review_count, AVG(rating) as avg_rating
+            FROM reviews
+            GROUP BY program_id, program_title
+            ORDER BY review_count DESC, avg_rating DESC
+            LIMIT ?
+        ''', (n_programs,))
+        popular_programs = c.fetchall()
+        conn.close()
+        return [{'program_id': row[0], 'title': row[1], 'review_count': row[2], 'avg_rating': row[3]} for row in popular_programs]
+    except Exception as e:
+        print(f"Error fetching popular programs: {e}")
+        return []

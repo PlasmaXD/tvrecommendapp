@@ -1,4 +1,4 @@
-from database import get_all_reviews, get_program_details, add_program
+from database import get_all_reviews, get_program_details, add_program,get_popular_programs
 import pandas as pd
 from surprise import Dataset, Reader, SVD
 from surprise.model_selection import train_test_split
@@ -6,6 +6,17 @@ from scraper import get_program_details_from_scraper
 
 def recommend_programs(user_id, n_recommendations=10):
     reviews = get_all_reviews()
+    
+    ### 人気ベースレコメンド処理
+
+    user_reviews = [review for review in reviews if review[0] == user_id]
+    
+    # ユーザーのレビューが一定以下の場合は人気番組をレコメンド
+    if len(user_reviews) < 5:  # 例として5件未満のレビューの場合
+        popular_programs = get_popular_programs(n_recommendations)
+        return [{'title': program['title'], 'supplement': get_program_details(program['program_id'])['supplement']} for program in popular_programs]
+    ###人気ベースレコメンド処理終了
+    
     data = [(user, item, float(rating)) for user, item, rating in reviews]
 
     reader = Reader(rating_scale=(1, 5))

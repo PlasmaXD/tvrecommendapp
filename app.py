@@ -2,7 +2,8 @@ import streamlit as st
 from scraper import get_program_details
 from database import add_review, get_reviews, create_tables, add_user, get_user_favorites, add_favorite
 from utils import extract_program_id
-from recommendation import recommend_programs
+from recommendation import recommend_programs  # Surpriseライブラリを使用したレコメンドシステムをインポート
+import pandas as pd
 
 # セッションステートを初期化
 if 'search_word' not in st.session_state:
@@ -61,7 +62,7 @@ def main():
 
     if st.session_state.logged_in_user:
         st.sidebar.subheader("おすすめの番組")
-        recommendations = recommend_programs(st.session_state.logged_in_user)
+        recommendations = recommend_programs(st.session_state.logged_in_user)  # Surpriseライブラリを使用したレコメンドシステムを呼び出す
         print(f"Recommendations for user {st.session_state.logged_in_user}: {recommendations}")
         if recommendations:
             for rec in recommendations:

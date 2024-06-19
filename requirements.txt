@@ -4,3 +4,5 @@ webdriver-manager==4.0.1
 beautifulsoup4==4.11.1
 seleniumbase
 webdriver-manager
+scikit-surprise
+pandas

@@ -29,6 +29,14 @@ def create_tables():
             PRIMARY KEY (user_id, program_id)
         )
     ''')
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS programs (
+            program_id TEXT PRIMARY KEY,
+            url TEXT,
+            title TEXT,
+            supplement TEXT
+        )
+    ''')
     conn.commit()
     conn.close()
 
@@ -69,7 +77,7 @@ def add_favorite(user_id, program_id):
     try:
         conn = connect_db()
         c = conn.cursor()
-        c.execute('INSERT OR IGNORE INTO favorites (user_id, program_id) VALUES (?, ?)', (user_id, program_id))
+        c.execute('INSERT OR IGNORE INTO favorites (user_id, program_id) VALUES (?, ?, ?)', (user_id, program_id))
         conn.commit()
         conn.close()
     except Exception as e:
@@ -86,3 +94,41 @@ def get_user_favorites(user_id):
     except Exception as e:
         print(f"Error fetching user favorites: {e}")
         return []
+
+def get_all_reviews():
+    try:
+        conn = connect_db()
+        c = conn.cursor()
+        c.execute('SELECT user_id, program_id, rating FROM reviews')
+        reviews = c.fetchall()
+        conn.close()
+        return reviews
+    except Exception as e:
+        print(f"Error fetching all reviews: {e}")
+        return []
+
+def get_program_details(program_id):
+    try:
+        conn = connect_db()
+        c = conn.cursor()
+        c.execute('SELECT url, title, supplement FROM programs WHERE program_id = ?', (program_id,))
+        program_details = c.fetchone()
+        conn.close()
+        if program_details:
+            return {'url': program_details[0], 'title': program_details[1], 'supplement': program_details[2]}
+        else:
+            return {'url': program_id, 'title': f'Program {program_id}', 'supplement': f'Details of Program {program_id}'}
+    except Exception as e:
+        print(f"Error fetching program details: {e}")
+        return {'url': program_id, 'title': f'Program {program_id}', 'supplement': f'Details of Program {program_id}'}
+
+def add_program(program_id, url, title, supplement):
+    try:
+        conn = connect_db()
+        c = conn.cursor()
+        c.execute('INSERT OR REPLACE INTO programs (program_id, url, title, supplement) VALUES (?, ?, ?, ?)',
+                  (program_id, url, title, supplement))
+        conn.commit()
+        conn.close()
+    except Exception as e:
+        print(f"Error adding program: {e}")

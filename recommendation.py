@@ -1,41 +1,11 @@
-# from database import get_user_favorites, get_reviews
-
-# def recommend_programs(user_id):
-#     favorite_program_ids = get_user_favorites(user_id)
-#     print(f"Favorite programs for user {user_id}: {favorite_program_ids}")
-#     if not favorite_program_ids:
-#         print(f"No favorite programs found for user {user_id}")
-#         return []
-
-#     recommendations = []
-#     for program_id in favorite_program_ids:
-#         reviews = get_reviews(program_id)
-#         print(f"Reviews for program {program_id}: {reviews}")
-#         for review in reviews:
-#             reviewer_id = review[0]
-#             if reviewer_id and reviewer_id != user_id:
-#                 recommended_programs = get_user_favorites(reviewer_id)
-#                 print(f"User {reviewer_id}'s favorite programs: {recommended_programs}")
-#                 for rec_id in recommended_programs:
-#                     if rec_id not in favorite_program_ids and rec_id not in recommendations:
-#                         recommendations.append(rec_id)
-    
-#     print(f"Recommended programs for user {user_id}: {recommendations}")
-#     recommended_programs_details = [{'url': pid, 'title': f'Program {pid}', 'supplement': f'Details of Program {pid}'} for pid in recommendations]
-#     return recommended_programs_details
 from database import get_all_reviews, get_program_details, add_program
-from scraper import get_program_details_from_scraper
 import pandas as pd
 from surprise import Dataset, Reader, SVD
 from surprise.model_selection import train_test_split
+from scraper import get_program_details_from_scraper
 
 def recommend_programs(user_id, n_recommendations=10):
     reviews = get_all_reviews()
-    # if len(reviews) == 0:
-    #     print("No reviews available. Skipping recommendations.")
-    #     return []
-
-
     data = [(user, item, float(rating)) for user, item, rating in reviews]
 
     reader = Reader(rating_scale=(1, 5))
@@ -61,33 +31,25 @@ def recommend_programs(user_id, n_recommendations=10):
     recommended_programs_details = get_program_details_by_ids(recommended_programs_ids)
     return recommended_programs_details
 
-# def get_program_details_by_ids(program_ids):
-#     details = []
-#     for program_id in program_ids:
-#         detail = get_program_details(program_id)
-#         if detail['title'].startswith('Program'):
-#             # デフォルト値の場合はスクレイパーで詳細を取得
-#             scraped_details = get_program_details_from_scraper(program_id)
-#             if scraped_details:
-#                 add_program(program_id, scraped_details['url'], scraped_details['title'], scraped_details['supplement'])
-#                 details.append(scraped_details)
-#             else:
-#                 details.append(detail)
-#         else:
-#             details.append(detail)
-#     return details
 def get_program_details_by_ids(program_ids):
     details = []
     for program_id in program_ids:
         detail = get_program_details(program_id)
-        if detail['title'].startswith('Program'):
-            # デフォルト値の場合はスクレイパーで詳細を取得
-            scraped_details = get_program_details_from_scraper(program_id)
-            if scraped_details:
-                add_program(program_id, scraped_details['url'], scraped_details['title'], scraped_details['supplement'])
-                details.append(scraped_details)
-            else:
-                details.append(detail)
-        else:
+        if detail:
             details.append(detail)
+        else:
+            # デフォルト値を設定する場合はここでスクレイピング
+            details.append({'url': '', 'title': f'Program {program_id}', 'supplement': f'Details of Program {program_id}'})
     return details
+
+#スクレピングするから絶対大丈夫なパターン
+# def get_program_details_by_ids(program_ids):
+#     details = []
+#     for program_id in program_ids:
+#         detail = get_program_details(program_id)
+#         if not detail:
+#             # スクレイピングで詳細を取得し、データベースに保存
+#             detail = get_program_details_from_scraper(program_id)
+#             add_program(program_id, detail['url'], detail['title'], detail['supplement'])
+#         details.append(detail)
+#     return details

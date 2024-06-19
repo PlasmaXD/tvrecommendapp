@@ -16,6 +16,7 @@ def create_tables():
         CREATE TABLE IF NOT EXISTS reviews (
             review_id INTEGER PRIMARY KEY AUTOINCREMENT,
             program_id TEXT,
+            program_title TEXT,
             user_id TEXT,
             rating INTEGER,
             review_text TEXT,
@@ -50,16 +51,28 @@ def add_user(user_id, user_name):
     except Exception as e:
         print(f"Error adding user: {e}")
 
-def add_review(program_id, user_id, rating, review_text):
+def add_review(program_id, program_title, user_id, rating, review_text):
     try:
         conn = connect_db()
         c = conn.cursor()
-        c.execute('INSERT INTO reviews (program_id, user_id, rating, review_text) VALUES (?, ?, ?, ?)', (program_id, user_id, rating, review_text))
+        c.execute('INSERT INTO reviews (program_id, program_title, user_id, rating, review_text) VALUES (?, ?, ?, ?, ?)', 
+                  (program_id, program_title, user_id, rating, review_text))
         conn.commit()
         conn.close()
-        print(f"Review added: {program_id}, {user_id}, {rating}, {review_text}")
+        print(f"Review added: {program_id}, {program_title}, {user_id}, {rating}, {review_text}")
     except Exception as e:
         print(f"Error adding review: {e}")
+
+def add_program(program_id, url, title, supplement):
+    try:
+        conn = connect_db()
+        c = conn.cursor()
+        c.execute('INSERT OR REPLACE INTO programs (program_id, url, title, supplement) VALUES (?, ?, ?, ?)',
+                  (program_id, url, title, supplement))
+        conn.commit()
+        conn.close()
+    except Exception as e:
+        print(f"Error adding program: {e}")
 
 def get_reviews(program_id):
     try:
@@ -77,7 +90,7 @@ def add_favorite(user_id, program_id):
     try:
         conn = connect_db()
         c = conn.cursor()
-        c.execute('INSERT OR IGNORE INTO favorites (user_id, program_id) VALUES (?, ?, ?)', (user_id, program_id))
+        c.execute('INSERT OR IGNORE INTO favorites (user_id, program_id) VALUES (?, ?)', (user_id, program_id))
         conn.commit()
         conn.close()
     except Exception as e:
@@ -114,21 +127,10 @@ def get_program_details(program_id):
         c.execute('SELECT url, title, supplement FROM programs WHERE program_id = ?', (program_id,))
         program_details = c.fetchone()
         conn.close()
-        if program_details:
+        if program_details and program_details[1] != f'Program {program_id}':
             return {'url': program_details[0], 'title': program_details[1], 'supplement': program_details[2]}
         else:
-            return {'url': program_id, 'title': f'Program {program_id}', 'supplement': f'Details of Program {program_id}'}
+            return None
     except Exception as e:
         print(f"Error fetching program details: {e}")
-        return {'url': program_id, 'title': f'Program {program_id}', 'supplement': f'Details of Program {program_id}'}
-
-def add_program(program_id, url, title, supplement):
-    try:
-        conn = connect_db()
-        c = conn.cursor()
-        c.execute('INSERT OR REPLACE INTO programs (program_id, url, title, supplement) VALUES (?, ?, ?, ?)',
-                  (program_id, url, title, supplement))
-        conn.commit()
-        conn.close()
-    except Exception as e:
-        print(f"Error adding program: {e}")
+        return None

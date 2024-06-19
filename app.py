@@ -1,8 +1,8 @@
 import streamlit as st
 from scraper import get_program_details
-from database import add_review, get_reviews, create_tables, add_user, get_user_favorites, add_favorite
+from database import add_review, get_reviews, create_tables, add_user, get_user_favorites, add_favorite, add_program
 from utils import extract_program_id
-from recommendation import recommend_programs  # Surpriseライブラリを使用したレコメンドシステムをインポート
+from recommendation import recommend_programs
 import pandas as pd
 
 # セッションステートを初期化
@@ -13,7 +13,7 @@ if 'program_data' not in st.session_state:
 if 'logged_in_user' not in st.session_state:
     st.session_state.logged_in_user = None
 
-def review_form(program_id, user_id):
+def review_form(program_id, program_title, program_url, program_supplement, user_id):
     form_key = f"review_form_{program_id}"
     with st.form(key=form_key):
         rating = st.slider("評価", 1, 5, 3)
@@ -22,8 +22,9 @@ def review_form(program_id, user_id):
         
         if submit_button:
             if user_id is not None:  # ユーザーIDがNoneでないことを確認
-                add_review(program_id, user_id, rating, review_text)
+                add_review(program_id, program_title, user_id, rating, review_text)
                 add_favorite(user_id, program_id)
+                add_program(program_id, program_url, program_title, program_supplement)  # 番組詳細を保存
                 st.success("レビューが投稿されました！")
                 show_reviews(program_id)
             else:
@@ -62,7 +63,7 @@ def main():
 
     if st.session_state.logged_in_user:
         st.sidebar.subheader("おすすめの番組")
-        recommendations = recommend_programs(st.session_state.logged_in_user)  # Surpriseライブラリを使用したレコメンドシステムを呼び出す
+        recommendations = recommend_programs(st.session_state.logged_in_user)
         print(f"Recommendations for user {st.session_state.logged_in_user}: {recommendations}")
         if recommendations:
             for rec in recommendations:
@@ -78,15 +79,18 @@ def main():
 
     for program in st.session_state.program_data:
         program_id = extract_program_id(program['url'])  # URLから番組IDを抽出
-        st.write(f"番組名: {program['title']}")
-        st.write(f"情報: {program['supplement']}")
+        program_title = program['title']
+        program_url = program['url']
+        program_supplement = program['supplement']
+        st.write(f"番組名: {program_title}")
+        st.write(f"情報: {program_supplement}")
         st.write("共演者:")
         for name in program['cast_names']:
             st.write(f" - {name}")
         st.write("\n")
 
         # レビュー投稿フォームとレビュー表示
-        review_form(program_id, st.session_state.logged_in_user)
+        review_form(program_id, program_title, program_url, program_supplement, st.session_state.logged_in_user)
         show_reviews(program_id)
 
 if __name__ == "__main__":

@@ -35,7 +35,7 @@ def show_reviews(program_id):
     if reviews:
         st.subheader("レビュー")
         for review in reviews:
-            st.write(f"ユーザーID: {review[0]}, 評価: {review[1]}星, レビュー: {review[2]}, 投稿日: {review[3]}")
+            st.markdown(f"**ユーザーID**: {review[0]}<br>**評価**: {review[1]}星<br>**レビュー**: {review[2]}<br>**投稿日**: {review[3]}", unsafe_allow_html=True)
     else:
         st.write("この番組にはまだレビューがありません。")
 
@@ -82,7 +82,8 @@ def main():
         program_title = program['title']
         program_url = program['url']
         program_supplement = program['supplement']
-        st.write(f"番組名: {program_title}")
+        
+        st.markdown(f"<h2>{program_title}</h2>", unsafe_allow_html=True)  # 番組名を大きな文字で表示
         st.write(f"情報: {program_supplement}")
         
         # 共演者リストの折りたたみ

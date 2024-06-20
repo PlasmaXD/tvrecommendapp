@@ -23,8 +23,8 @@ def review_form(program_id, program_title, program_url, program_supplement, user
         if submit_button:
             if user_id is not None:  # ユーザーIDがNoneでないことを確認
                 add_review(program_id, program_title, user_id, rating, review_text)
-                add_favorite(user_id, program_id)
-                add_program(program_id, program_url, program_title, program_supplement)  # 番組詳細を保存
+                add_favorite(user_id, program_id)  # 修正された関数
+                add_program(program_id, program_url, program_title, program_supplement)
                 st.success("レビューが投稿されました！")
                 show_reviews(program_id)
             else:
@@ -84,9 +84,12 @@ def main():
         program_supplement = program['supplement']
         st.write(f"番組名: {program_title}")
         st.write(f"情報: {program_supplement}")
-        st.write("共演者:")
-        for name in program['cast_names']:
-            st.write(f" - {name}")
+        
+        # 共演者リストの折りたたみ
+        with st.expander("共演者を表示"):
+            for name in program['cast_names']:
+                st.write(f" - {name}")
+        
         st.write("\n")
 
         # レビュー投稿フォームとレビュー表示

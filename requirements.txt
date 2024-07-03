@@ -1,9 +1,10 @@
-selenium==4.20.0
-streamlit==1.34.0
+PyVirtualDisplay>=0.2.5
+selenium>=4.6.0
+streamlit>=1.29.0
 webdriver-manager==4.0.1
 beautifulsoup4==4.11.1
 pandas
 scikit-surprise
-numpy<2
+numpy<26
 seleniumbase
-PyVirtualDisplay==0.2.5
+

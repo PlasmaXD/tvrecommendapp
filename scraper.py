@@ -5,6 +5,8 @@ import time
 from selenium.webdriver.firefox.service import Service
 from selenium.webdriver.firefox.options import Options
 from webdriver_manager.firefox import GeckoDriverManager
+import chromedriver_binary
+
 def get_program_details(search_query):
     options = Options()
     options.add_argument('--headless')

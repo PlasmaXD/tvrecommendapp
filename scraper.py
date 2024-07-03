@@ -10,6 +10,8 @@ def get_program_details(search_query):
     options.add_argument('--headless')
     options.add_argument('--disable-gpu')
     options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')  # 追加オプション
+
     # service = Service(ChromeDriverManager().install())
     # driver = webdriver.Chrome(service=service, options=options)
     driver = webdriver.Chrome(options=options)

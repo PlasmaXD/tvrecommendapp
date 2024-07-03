@@ -6,3 +6,4 @@ pandas
 scikit-surprise
 numpy<2
 seleniumbase
+PyVirtualDisplay==0.2.5

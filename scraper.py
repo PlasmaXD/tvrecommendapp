@@ -2,18 +2,17 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 import time
-from selenium.webdriver.firefox.service import Service
-from selenium.webdriver.firefox.options import Options
-from webdriver_manager.firefox import GeckoDriverManager
 import chromedriver_binary
-
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
 def get_program_details(search_query):
     options = Options()
     options.add_argument('--headless')
     options.add_argument('--disable-gpu')
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')  # 追加オプション
-    # service = Service(ChromeDriverManager(version="114.0.5735.90").install())
+  #   service = Service(ChromeDriverManager(version="128.0.6572.0.0").install())  126.0.6478.126
+    # service = Service(ChromeDriverManager(version="126.0.6478.126").install())  
 
     # service = Service(ChromeDriverManager().install())
     # driver = webdriver.Chrome(service=service, options=options)

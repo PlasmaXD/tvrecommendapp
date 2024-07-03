@@ -10,15 +10,10 @@ def get_program_details(search_query):
     options.add_argument('--headless')
     options.add_argument('--disable-gpu')
     options.add_argument('--no-sandbox')
-<<<<<<< HEAD
-    service = Service(ChromeDriverManager().install())
-    driver = webdriver.Chrome(service=service, options=options)
-=======
     # service = Service(ChromeDriverManager().install())
     # driver = webdriver.Chrome(service=service, options=options)
     driver = webdriver.Chrome(options=options)
 
->>>>>>> 5f1d30b (    driver = webdriver.Chrome(options=options))
     search_url = f"https://bangumi.org/search?q={search_query}&area_code=23"
     driver.get(search_url)
     time.sleep(5)
@@ -48,16 +43,10 @@ def get_program_details_from_scraper(program_id):
     options.add_argument('--headless')
     options.add_argument('--disable-gpu')
     options.add_argument('--no-sandbox')
-<<<<<<< HEAD
-    service = Service(ChromeDriverManager().install())
-    driver = webdriver.Chrome(service=service, options=options)
-    
-=======
     # service = Service(ChromeDriverManager().install())
     # driver = webdriver.Chrome(service=service, options=options)
     driver = webdriver.Chrome(options=options)
 
->>>>>>> 5f1d30b (    driver = webdriver.Chrome(options=options))
     # 検索URLを構築
     # search_url = f"https://bangumi.org/search?q={program_id}&area_code=23"
     search_url = f"https://bangumi.org/tv_events/{program_id}"

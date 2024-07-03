@@ -6,3 +6,4 @@ pandas
 scikit-surprise
 numpy<2.0.0
 chromedriver_binary==126.0.6478.126
+webdriver_manager

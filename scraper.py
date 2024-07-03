@@ -15,12 +15,12 @@ def get_program_details(search_query):
   #   service = Service(ChromeDriverManager(version="126.0.6478.126").install())  
 
     service = Service(ChromeDriverManager().install())
-    # driver = webdriver.Chrome(service=service, options=options)
+    driver = webdriver.Chrome(service=service, options=options)
 
     # geckodriver_path = './geckodriver'  # Geckodriverのパス
     # service = Service(geckodriver_path)
     # service = Service(GeckoDriverManager().install())
-    driver = webdriver.Firefox(service=service, options=options)
+    #  driver = webdriver.Firefox(service=service, options=options)
    #  driver = webdriver.Chrome(options=options)
 
     search_url = f"https://bangumi.org/search?q={search_query}&area_code=23"

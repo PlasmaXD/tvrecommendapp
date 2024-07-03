@@ -12,16 +12,16 @@ def get_program_details(search_query):
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')  # 追加オプション
   #   service = Service(ChromeDriverManager(version="128.0.6572.0.0").install())  126.0.6478.126
-  #   service = Service(ChromeDriverManager(version="126.0.6478.126").install())  
+    # service = Service(ChromeDriverManager(version="126.0.6478.126").install())  
 
-    service = Service(ChromeDriverManager().install())
-    driver = webdriver.Chrome(service=service, options=options)
+   #   service = Service(ChromeDriverManager().install())
+    # driver = webdriver.Chrome(service=service, options=options)
 
     # geckodriver_path = './geckodriver'  # Geckodriverのパス
     # service = Service(geckodriver_path)
     # service = Service(GeckoDriverManager().install())
     #  driver = webdriver.Firefox(service=service, options=options)
-   #  driver = webdriver.Chrome(options=options)
+    driver = webdriver.Chrome(options=options)
 
     search_url = f"https://bangumi.org/search?q={search_query}&area_code=23"
     driver.get(search_url)

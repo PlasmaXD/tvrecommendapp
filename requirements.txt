@@ -1,6 +1,6 @@
-selenium==4.20.0
-streamlit==1.34.0
-beautifulsoup4==4.11.1
+streamlit
+selenium
 webdriver-manager
-scikit-surprise
 pandas
+scikit-surprise
+sqlite3

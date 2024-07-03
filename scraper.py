@@ -2,7 +2,9 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 import time
-
+from selenium.webdriver.firefox.service import Service
+from selenium.webdriver.firefox.options import Options
+from webdriver_manager.firefox import GeckoDriverManager
 def get_program_details(search_query):
     options = Options()
     options.add_argument('--headless')
@@ -14,8 +16,9 @@ def get_program_details(search_query):
     # service = Service(ChromeDriverManager().install())
     # driver = webdriver.Chrome(service=service, options=options)
 
-
-    driver = webdriver.Chrome(options=options)
+    service = Service(GeckoDriverManager().install())
+    driver = webdriver.Firefox(service=service, options=options)
+    # driver = webdriver.Chrome(options=options)
 
     search_url = f"https://bangumi.org/search?q={search_query}&area_code=23"
     driver.get(search_url)

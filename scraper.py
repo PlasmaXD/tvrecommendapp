@@ -16,7 +16,9 @@ def get_program_details(search_query):
     # service = Service(ChromeDriverManager().install())
     # driver = webdriver.Chrome(service=service, options=options)
 
-    service = Service(GeckoDriverManager().install())
+    geckodriver_path = './geckodriver'  # Geckodriverのパス
+    service = Service(geckodriver_path)
+    # service = Service(GeckoDriverManager().install())
     driver = webdriver.Firefox(service=service, options=options)
     # driver = webdriver.Chrome(options=options)
 

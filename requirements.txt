@@ -1,5 +1,5 @@
 PyVirtualDisplay>=0.2.5
-selenium==4.5.0
+selenium==4.22.0
 streamlit>=1.29.0
 beautifulsoup4==4.11.1
 pandas

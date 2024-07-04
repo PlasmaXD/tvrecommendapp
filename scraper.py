@@ -1,26 +1,23 @@
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
-import time
 from webdriver_manager.chrome import ChromeDriverManager
-import chromedriver_autoinstaller
-from selenium.webdriver.chrome.service import Service
+import time
 
 def get_program_details(search_query):
-    chromedriver_path = chromedriver_autoinstaller.install()
-
     options = Options()
     options.add_argument('--headless')
     options.add_argument('--disable-gpu')
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
+    options.binary_location = "/usr/bin/google-chrome-stable"
 
-    service = Service(chromedriver_path)
+    service = Service("/usr/local/bin/chromedriver")
     driver = webdriver.Chrome(service=service, options=options)
-    # driver = webdriver.Chrome(options=options)
     search_url = f"https://bangumi.org/search?q={search_query}&area_code=23"
     driver.get(search_url)
     
@@ -74,7 +71,8 @@ def get_program_details_from_scraper(program_id):
     options.add_argument('--disable-gpu')
     options.add_argument('--no-sandbox')
 
-    driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
+    service = Service(ChromeDriverManager().install())
+    driver = webdriver.Chrome(service=service, options=options)
     search_url = f"https://bangumi.org/tv_events/{program_id}"
     driver.get(search_url)
     time.sleep(5)
@@ -114,3 +112,6 @@ def get_program_details_from_scraper(program_id):
 
     driver.quit()
     return program_data
+
+
+

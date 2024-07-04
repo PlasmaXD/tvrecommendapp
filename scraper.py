@@ -6,15 +6,21 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 import time
 from webdriver_manager.chrome import ChromeDriverManager
+import chromedriver_autoinstaller
+from selenium.webdriver.chrome.service import Service
 
 def get_program_details(search_query):
+    chromedriver_path = chromedriver_autoinstaller.install()
+
     options = Options()
     options.add_argument('--headless')
     options.add_argument('--disable-gpu')
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
-
-    driver = webdriver.Chrome(options=options)
+    # Use the path to the installed chromedriver
+    service = Service(chromedriver_path)
+    driver = webdriver.Chrome(service=service, options=options)
+    # driver = webdriver.Chrome(options=options)
     search_url = f"https://bangumi.org/search?q={search_query}&area_code=23"
     driver.get(search_url)
     

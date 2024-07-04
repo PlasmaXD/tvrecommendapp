@@ -17,7 +17,7 @@ def get_program_details(search_query):
     options.add_argument('--disable-gpu')
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
-    # Use the path to the installed chromedriver
+    # Use the path to the installed chromedriverああああ
     service = Service(chromedriver_path)
     driver = webdriver.Chrome(service=service, options=options)
     # driver = webdriver.Chrome(options=options)

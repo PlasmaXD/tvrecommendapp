@@ -1,3 +1,4 @@
+import streamlit as st
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
@@ -113,5 +114,16 @@ def get_program_details_from_scraper(program_id):
     driver.quit()
     return program_data
 
+def main():
+    st.title('TV Program Recommendation App')
+    search_word = st.text_input("検索ワードを入力してください", st.session_state.get('search_word', ''))
+    if st.button('検索'):
+        st.session_state.search_word = search_word
+        st.session_state.program_data = get_program_details(search_word)
+    
+    if 'program_data' in st.session_state:
+        for program in st.session_state.program_data:
+            st.write(program)
 
-
+if __name__ == "__main__":
+    main()

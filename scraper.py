@@ -17,16 +17,9 @@ def get_program_details(search_query):
     options.add_argument('--disable-gpu')
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
-    # Use the path to the installed chromedriverああああ
-    
-    
-    options.binary_location = "/usr/bin/google-chrome-stable"  # Path to Google Chrome executable
-   #   service = Service(chromedriver_path)
-
-    # Use the path to the installed chromedriver
-    service = Service("/usr/bin/chromedriver")
+    options.binary_location = "/usr/local/bin/google-chrome"  # Path to Google Chrome executable
+    service = Service("/usr/local/bin/chromedriver")
     driver = webdriver.Chrome(service=service, options=options)
-
     # driver = webdriver.Chrome(options=options)
     search_url = f"https://bangumi.org/search?q={search_query}&area_code=23"
     driver.get(search_url)

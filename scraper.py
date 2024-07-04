@@ -10,7 +10,6 @@ import chromedriver_autoinstaller
 from selenium.webdriver.chrome.service import Service
 
 def get_program_details(search_query):
-    chromedriver_autoinstaller.install()
 
     options = Options()
     options.add_argument('--headless')

@@ -16,11 +16,11 @@ def get_program_details(search_query):
     options.add_argument('--disable-gpu')
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
+    driver = webdriver.Chrome(options=options)
 
     # service = Service(chromedriver_path)
     # driver = webdriver.Chrome(service=service, options=options)
-    # driver = webdriver.Chrome(options=options)
-    driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
+   # driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
 
     search_url = f"https://bangumi.org/search?q={search_query}&area_code=23"
     driver.get(search_url)

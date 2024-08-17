@@ -9,7 +9,7 @@ tvapp/
 └── utils.py
 ```
 
-### 各ファイルの内容
+### 実行方法
 ```
 streamlit run app.py
 ```

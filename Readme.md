@@ -13,3 +13,4 @@ tvapp/
 ```
 streamlit run app.py
 ```
+http://52.55.25.111:8501/
